@@ -47,10 +47,10 @@ export default {
     strategies: {
       local: {
         token: {
-          property: 'token',
+          property: 'access_token',
           global: true,
-          required: true,
-          type: 'Bearer'
+          //required: true,
+          //type: 'Bearer'
         },
         user: {
           property: 'user',
@@ -59,7 +59,7 @@ export default {
         endpoints: {
           login: { url: '/auth/login', method: 'post', propertyName: "access_token" },
           logout: { url: '/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get' }
+          user: { url: '/profile', method: 'get' }
         }
       }
     }
