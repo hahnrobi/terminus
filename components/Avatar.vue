@@ -8,7 +8,7 @@
 import Avataaars from 'vuejs-avataaars'
 
 export default {
-    name: "Avatar",
+  name: "Avatar",
   components: {
     Avataaars
   }
