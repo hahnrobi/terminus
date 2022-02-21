@@ -98,7 +98,7 @@
                 <v-select
                 v-model="avatar.topColor"
                 :items="topColors"
-                label="Hair/hat color"
+                label="Hat color"
                 outlined
                 ></v-select>
             </v-container>
