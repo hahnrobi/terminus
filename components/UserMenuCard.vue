@@ -42,13 +42,14 @@
 
           <v-btn
             text
+            @click="$emit('buttonClicked')"
           >
             Account
           </v-btn>
           <v-btn
             color="error"
             text
-            @click="$auth.logout()"
+            @click="$emit('buttonClicked'); $auth.logout()"
           >
             Log out
           </v-btn>

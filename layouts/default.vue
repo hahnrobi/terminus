@@ -58,6 +58,7 @@
 
       <div v-if="$auth.loggedIn">
         <v-menu
+          v-model="userMenu"
           :close-on-content-click="false"
           :nudge-width="200"
           offset-x
@@ -72,7 +73,7 @@
               <Avatar class="user-avatar"/>{{ $auth.user.email }}
             </v-btn>
           </template>
-          <UserMenuCard />
+          <UserMenuCard @buttonClicked="userMenu = false" />
       </v-menu>
       </div>
       <div v-else>
@@ -106,7 +107,6 @@
 </template>
 
 <script>
-import Avatar from '~/components/Avatar.vue'
 export default {
   name: 'DefaultLayout',
   data() {
@@ -114,6 +114,7 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
+      userMenu: false,
       items: [
         {
           icon: 'mdi-apps',
