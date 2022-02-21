@@ -56,9 +56,9 @@
 
       <v-spacer />
 
-      <div v-if="$auth.loggedin">
-        <v-btn text to="/auth/profile">profile</v-btn>
-        <v-btn text to="/auth/logout">logout</v-btn>
+      <div v-if="$auth.loggedIn">
+        <v-btn text to="/auth/profile">{{ $auth.user.email }}</v-btn>
+        <v-btn text @click="$auth.logout()">logout</v-btn>
       </div>
       <div v-else>
         <v-btn text to="/auth/login">login</v-btn>
