@@ -70,7 +70,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              <Avatar class="user-avatar"/>{{ $auth.user.email }}
+              <Avatar class="user-avatar"/>{{ $auth.user.name }}
             </v-btn>
           </template>
           <UserMenuCard @buttonClicked="userMenu = false" />
@@ -138,6 +138,9 @@ export default {
       title: 'Vuetify.js',
     }
   },
+  mounted() {
+    console.log("USER", this.$auth.user);
+  }
 }
 </script>
 <style lang="scss" scoped>
