@@ -5,6 +5,7 @@ export default {
   server: {
     port: 8000
   },
+  serverMiddleware: ['~/server-middleware/only-spa'],
   head: {
     titleTemplate: '%s - learn',
     title: 'learn',
