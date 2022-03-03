@@ -1,12 +1,12 @@
 import Vuex from "vuex";
-import axios from '@nuxtjs/axios'
 
 export default () => new Vuex.Store({
     state: {
-        currentUser: {email:""}
+        currentUser: {email:""},
+        ownedShells: []
     },
     getters : {
-
+        ownedShells: (state) => state.ownedShells
     },
     mutations: {
         LOGIN_USER(state, user) {
@@ -14,6 +14,9 @@ export default () => new Vuex.Store({
         },
         LOGOUT_USER(state) {
             state.currentUser = {};
+        },
+        SET_OWNED_SHELLS(state, shells) {
+            state.ownedShells = shells;
         }
     },
     actions: {
@@ -23,8 +26,12 @@ export default () => new Vuex.Store({
         logoutUser({commit}) {
             commit("LOGOUT_USER");
         },
-        getShells({ commit }) {
-            axios.get("")
+        async getOwnedShells({ commit }) {
+            //TODO: Token auth
+            await this.$axios.get("/shell")
+                .then(res => {
+                    commit('SET_OWNED_SHELLS', res.data);
+                })
         }
     }
 });
