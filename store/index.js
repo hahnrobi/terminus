@@ -1,9 +1,12 @@
 import Vuex from "vuex";
-
+import axios from '@nuxtjs/axios'
 
 export default () => new Vuex.Store({
     state: {
         currentUser: {email:""}
+    },
+    getters : {
+
     },
     mutations: {
         LOGIN_USER(state, user) {
@@ -19,6 +22,9 @@ export default () => new Vuex.Store({
         },
         logoutUser({commit}) {
             commit("LOGOUT_USER");
+        },
+        getShells({ commit }) {
+            axios.get("")
         }
     }
 });
