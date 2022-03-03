@@ -3,7 +3,9 @@
 </template>
 <script>
 export default {
-    layout: 'terminal'
-    
+    layout: 'terminal',
+    components: {
+    Terminal: () => {if(process.client){return import('../components/Terminal.vue')}},
+  },
 }
 </script>
