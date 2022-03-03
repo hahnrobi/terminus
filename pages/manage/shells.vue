@@ -1,9 +1,39 @@
 <template>
-      <div class="hello">
-    <div v-for='shell in shells' :key='shell.id'>
-        <h3>Host name: </h3> {{ shell.host }}
-    </div>
-    <h2>Essential Links</h2>
+    <div class="user-shell-list">
+    <h2>Your shell connections</h2>
+    <v-card v-for='shell in shells' :key='shell.id' outlined style="margin-bottom: 1rem">
+        <v-card-title>{{ shell.name }}</v-card-title>
+        <v-card-subtitle>{{ shell.host }}<span v-if="shell.port">:{{ shell.port }}</span></v-card-subtitle>
+        <v-card-text>
+            <div v-if="shell.username">
+                Username: {{shell.username}}
+            </div>
+            <div v-if="shell.username">
+                Authentication: <v-chip v-if="shell.password" color="blue" label outlined><v-icon>mdi-lock</v-icon> Password</v-chip><v-chip v-if="shell.privatekey" color="green" label outlined><v-icon>mdi-key</v-icon> Private key</v-chip>
+            </div>
+        </v-card-text>
+        <v-card-actions>
+                <v-btn color="green" text v-bind:to="`/terminal/`+ shell._id">
+                    <v-icon>
+                        mdi-connection
+                    </v-icon>
+                    Connect
+                </v-btn>
+                <v-btn text>
+                    Edit
+                </v-btn>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn icon color="red" v-bind="attrs" v-on="on">
+                            <v-icon>
+                                mdi-trash-can
+                            </v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Delete</span>
+                </v-tooltip>
+         </v-card-actions>
+    </v-card>
   </div>
 </template>
 <script>
