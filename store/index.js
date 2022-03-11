@@ -6,7 +6,8 @@ export default () => new Vuex.Store({
         ownedShells: []
     },
     getters : {
-        ownedShells: (state) => state.ownedShells
+        ownedShells: (state) => state.ownedShells,
+        getOwnedShell: (state, shellId) => state.ownedShells.filter(_id === shellId)
     },
     mutations: {
         LOGIN_USER(state, user) {
@@ -32,6 +33,9 @@ export default () => new Vuex.Store({
                 .then(res => {
                     commit('SET_OWNED_SHELLS', res.data);
                 })
+        },
+        getOwnedShellDetails({ commit }, id) {
+            return this.state.getOwnedShell(id);
         }
     }
 });
