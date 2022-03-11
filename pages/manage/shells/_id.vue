@@ -31,7 +31,7 @@
             required
           ></v-text-field>
           <v-select
-            :items="items"
+            :items="authentication_types"
             filled
             outlined
             label="Authentication type"
@@ -58,7 +58,9 @@
 export default {
   name: 'SingleShellMaganePage',
   data() {
-    return {}
+    return {
+        authentication_types: ['None', 'Password', 'Private key'],
+    }
   },
   computed: {},
 }
