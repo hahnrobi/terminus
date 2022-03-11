@@ -1,6 +1,9 @@
 <template>
     <div class="user-shell-list">
     <h2>Your shell connections</h2>
+    <div class="button-row">
+        <v-btn depressed color="green" to="shells/new"><v-icon dark>mdi-plus</v-icon>Add new </v-btn>
+    </div>
     <v-card v-for='shell in shells' :key='shell.id' outlined style="margin-bottom: 1rem">
         <v-card-title>{{ shell.name }}</v-card-title>
         <v-card-subtitle>{{ shell.host }}<span v-if="shell.port">:{{ shell.port }}</span></v-card-subtitle>
@@ -36,6 +39,13 @@
     </v-card>
   </div>
 </template>
+<style lang="scss" scoped>
+.button-row {
+    display: flex;
+    flex-direction: row;
+    margin: .5rem 0;
+}
+</style>
 <script>
 export default {
     name: "ShellsPage",
