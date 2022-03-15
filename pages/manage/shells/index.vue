@@ -22,7 +22,7 @@
                     </v-icon>
                     Connect
                 </v-btn>
-                <v-btn text>
+                <v-btn text v-bind:to="shell._id">
                     Edit
                 </v-btn>
                 <v-tooltip bottom>
