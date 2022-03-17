@@ -1,4 +1,5 @@
 export class ShellModel {
+    id: string|null = null;
     name: string
     host: string
     port: number
@@ -9,6 +10,7 @@ export class ShellModel {
 
     constructor(initializer: any) {
         if(initializer) {
+        this.id = initializer._id;
         this.name     = initializer.name;
         this.host = initializer.host;
         this.port     = initializer.port ? initializer.port : 22;
