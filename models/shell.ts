@@ -1,6 +1,6 @@
 export class ShellModel {
     name: string
-    hostname: string
+    host: string
     port: number
     username?: string
     auth_type: string|null = null

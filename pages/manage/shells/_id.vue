@@ -84,6 +84,7 @@
         ></v-progress-circular
         >Save</v-btn
       >
+      <v-text-field type="text" v-model="asd.prop" />
     </v-container>
   </v-form>
 </template>
@@ -95,6 +96,7 @@ export default {
     return {
       formSubmitted: false,
       shellObject: {},
+      asd: {prop: "asd"},
       authentication_types: [
         {
           label: 'None',
@@ -125,7 +127,9 @@ export default {
   fetchOnServer: false,
   methods: {
     sendForm: function () {
-      this.$data.formSubmitted = true
+      this.$data.formSubmitted = true;
+      console.log(this.$auth);
+      this.$axios.post("/shell", this.shellObject);
     },
   },
 }
