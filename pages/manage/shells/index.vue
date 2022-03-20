@@ -22,12 +22,12 @@
                     </v-icon>
                     Connect
                 </v-btn>
-                <v-btn text v-bind:to="shell._id">
+                <v-btn text v-bind:to="`/manage/shells/` + shell._id">
                     Edit
                 </v-btn>
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon color="red" v-bind="attrs" v-on="on">
+                        <v-btn icon color="red" v-bind="attrs" v-on="on" @click="removeShell(shell._id)">
                             <v-icon>
                                 mdi-trash-can
                             </v-icon>
@@ -55,6 +55,13 @@ export default {
     computed: {
         shells() {
             return this.$store.getters.ownedShells;
+        }
+    },
+    methods: {
+        removeShell(id) {
+            this.$axios.delete("/shell/" + id).then( () => {
+                this.$store.dispatch("getOwnedShells");
+            });
         }
     },
     mounted() {

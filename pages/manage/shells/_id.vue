@@ -126,7 +126,7 @@ export default {
   methods: {
     sendForm: function () {
       this.$data.formSubmitted = true;
-      if((this.shellObject as ShellModel).id) {
+      if(this.shellObject.id) {
         this.$axios.put("/shell", this.shellObject);
       }else {
         this.$axios.post("/shell", this.shellObject);
