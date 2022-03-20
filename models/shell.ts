@@ -30,4 +30,8 @@ export class ShellModel {
             this.auth_type = 'private_key';
         }
     }
+
+    public validate() : boolean {
+        return true;
+    }
 }

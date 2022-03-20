@@ -126,10 +126,16 @@ export default {
   methods: {
     sendForm: function () {
       this.$data.formSubmitted = true;
+      this.shellObject.validate();
+      console.log(this.shellObject);
       if(this.shellObject.id) {
-        this.$axios.put("/shell", this.shellObject);
+        this.$axios.put("/shell/" + this.shellObject.id, this.shellObject).then(() => {
+          this.formSubmitted = false;
+        });
       }else {
-        this.$axios.post("/shell", this.shellObject);
+        this.$axios.post("/shell", this.shellObject).then(() => {
+          this.formSubmitted = false;
+        });
       }
     },
   },
