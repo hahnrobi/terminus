@@ -126,7 +126,7 @@ export default {
           title: 'Inspire',
           to: '/inspire',
         },
-                {
+        {
           icon: 'mdi-battery',
           title: 'Teszt oldal',
           to: '/test',
@@ -140,6 +140,13 @@ export default {
   },
   mounted() {
     console.log("USER", this.$auth.user);
+    if(this.$auth.user) {
+      this.items.push({
+        icon: 'mdi-console-line',
+        title: 'Shells',
+        to: "/manage/shells"
+      })
+    }
   }
 }
 </script>
