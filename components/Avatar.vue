@@ -1,6 +1,6 @@
 <template>
   <div>
-    <avataaars></avataaars>
+    <avataaars @avatar="logAvatar"></avataaars>
   </div>
 </template>
 
@@ -11,6 +11,11 @@ export default {
   name: "Avatar",
   components: {
     Avataaars
+  },
+  methods: {
+    logAvatar(avatar) {
+      console.log(avatar);
+    }
   }
 }
 </script>

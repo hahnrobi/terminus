@@ -27,6 +27,7 @@
                 v-model="avatar.accessoriesType"
                 :items="accessoriesTypes"
                 label="Accessory"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
@@ -318,6 +319,17 @@ export default Vue.extend({
     components: {
         Avataaars
     },
+    props: {
+        avatar: {
+            default() {return new Avataaar()},
+            type: Avataaar
+        }
+    },
+    emits: {
+        avatar: {
+            type: Avataaar
+        }
+    },
     data() {
         return {
             accessoriesTypes: accessoriesType,
@@ -333,7 +345,12 @@ export default Vue.extend({
             skinColors: skinColor,
             topTypes: topType,
             topColors: topColor,
-            avatar: new Avataaar()
+        }
+    },
+    methods: {
+        updateAvatar() {
+            console.log("update");
+            this.$emit("avatar");
         }
     }
 })
