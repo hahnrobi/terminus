@@ -30,6 +30,7 @@ export default {
         this.$axios.put("user/avatar", this.avatar).then(() => {
           this.isSubmitted = false;
           this.responseMessage = "Changes saved."
+          this.$auth.fetchUser();
         }).catch((err) => {this.isSubmitted = false; this.responseMessage = err});
     }
   }

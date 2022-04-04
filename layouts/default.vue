@@ -70,7 +70,22 @@
               v-bind="attrs"
               v-on="on"
             >
-              <Avatar class="user-avatar"/>{{ $auth.user.name }}
+              <avataaars class="user-avatar" 
+            :clotheType="userAvatar.clotheType"
+            :accessoriesType="userAvatar.accessoriesType"
+            :clotheColor="userAvatar.clotheColor"
+            :eyebrowType="userAvatar.eyebrowType"
+            :eyeType="userAvatar.eyeType"
+            :facialHairColor="userAvatar.facialHairColor"
+            :facialHairType="userAvatar.facialHairType"
+            :hairColor="userAvatar.hairColor"
+            :graphicType="userAvatar.graphicType"
+            :mouthType="userAvatar.mouthType"
+            :skinColor="userAvatar.skinColor"
+            :topType="userAvatar.topType"
+            :topColor="userAvatar.topColor"
+              />
+              {{ $auth.user.name }}
             </v-btn>
           </template>
           <UserMenuCard @buttonClicked="userMenu = false" />
@@ -107,8 +122,20 @@
 </template>
 
 <script>
+import Avataaars from 'vuejs-avataaars'
 export default {
   name: 'DefaultLayout',
+  components: {
+    Avataaars
+  },
+  computed: {
+    userAvatar() {
+      if(this.$auth.user.avatar) {
+        return JSON.parse(this.$auth.user.avatar);
+      }
+      return undefined;
+    }
+  },
   data() {
     return {
       clipped: false,
@@ -140,6 +167,7 @@ export default {
   },
   mounted() {
     console.log("USER", this.$auth.user);
+    console.log(JSON.parse(this.$auth.user.avatar));
     if(this.$auth.user) {
       this.items.push({
         icon: 'mdi-console-line',
