@@ -312,7 +312,7 @@ const topColor = [
     'White'
 ]
 
-class Avataaar {
+export class Avataaar {
     accessoriesType = accessoriesType[2]
     clotheType = clotheType[1]
     clotheColor = clotheColor[0]
@@ -333,7 +333,7 @@ export default Vue.extend({
     },
     props: {
         avatar: {
-            default() {return new Avataaar()},
+            default() {const avatar = new Avataaar();return avatar;},
             type: Avataaar
         }
     },
