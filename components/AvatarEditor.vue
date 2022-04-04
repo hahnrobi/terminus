@@ -34,72 +34,84 @@
                 v-model="avatar.clotheType"
                 :items="clotheTypes"
                 label="Cloth type"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.clotheColor"
                 :items="clotheColors"
                 label="Cloth color"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.eyebrowType"
                 :items="eyebrowTypes"
                 label="Eyebrow type"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.eyeType"
                 :items="eyeTypes"
                 label="Eye type"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.facialHairColor"
                 :items="facialHairColors"
                 label="Facial hair color"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.facialHairType"
                 :items="facialHairTypes"
                 label="Facial hair types"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.hairColor"
                 :items="hairColors"
                 label="Hair color"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.graphicType"
                 :items="graphicTypes"
                 label="Graphic"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.mouthType"
                 :items="mouthTypes"
                 label="Mouth"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.skinColor"
                 :items="skinColors"
                 label="Skin color"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.topType"
                 :items="topTypes"
                 label="Hair/hat"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
                 <v-select
                 v-model="avatar.topColor"
                 :items="topColors"
                 label="Hat color"
+                @change="updateAvatar"
                 outlined
                 ></v-select>
             </v-container>
@@ -349,8 +361,7 @@ export default Vue.extend({
     },
     methods: {
         updateAvatar() {
-            console.log("update");
-            this.$emit("avatar");
+            this.$emit("avatar", this.avatar);
         }
     }
 })
