@@ -34,6 +34,7 @@ export default {
         }).catch((err) => {this.isSubmitted = false; this.responseMessage = err});
     }
   },
+  middleware: 'auth',
   mounted() {
     if(this.$auth.user.avatar) {
 

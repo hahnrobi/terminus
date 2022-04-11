@@ -6,6 +6,9 @@ export default {
     port: 8000
   },
   serverMiddleware: ['~/server-middleware/only-spa'],
+  router: {
+    middleware: ['login-redirect'],
+  },
   head: {
     titleTemplate: '%s - learn',
     title: 'learn',
