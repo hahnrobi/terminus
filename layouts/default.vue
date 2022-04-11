@@ -70,21 +70,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              <avataaars class="user-avatar" 
-            :clotheType="userAvatar.clotheType"
-            :accessoriesType="userAvatar.accessoriesType"
-            :clotheColor="userAvatar.clotheColor"
-            :eyebrowType="userAvatar.eyebrowType"
-            :eyeType="userAvatar.eyeType"
-            :facialHairColor="userAvatar.facialHairColor"
-            :facialHairType="userAvatar.facialHairType"
-            :hairColor="userAvatar.hairColor"
-            :graphicType="userAvatar.graphicType"
-            :mouthType="userAvatar.mouthType"
-            :skinColor="userAvatar.skinColor"
-            :topType="userAvatar.topType"
-            :topColor="userAvatar.topColor"
-              />
+              <Avatar :avatar="userAvatar" />
               {{ $auth.user.name }}
             </v-btn>
           </template>
@@ -166,8 +152,6 @@ export default {
     }
   },
   mounted() {
-    console.log("USER", this.$auth.user);
-    console.log(JSON.parse(this.$auth.user.avatar));
     if(this.$auth.user) {
       this.items.push({
         icon: 'mdi-console-line',

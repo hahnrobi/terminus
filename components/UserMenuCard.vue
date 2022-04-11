@@ -3,7 +3,7 @@
         <v-list>
           <v-list-item>
             <v-list-item-avatar>
-              <Avatar style="width: 100%"/>
+              <Avatar :avatar="userAvatar" />
             </v-list-item-avatar>
 
             <v-list-item-content>
@@ -57,6 +57,14 @@
 </template>
 <script>
 export default {
-    name: "UserMenuCard"
+    name: "UserMenuCard",
+    computed: {
+    userAvatar() {
+      if(this.$auth.user.avatar) {
+        return JSON.parse(this.$auth.user.avatar);
+      }
+      return undefined;
+    }
+  },
 }
 </script>

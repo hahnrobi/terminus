@@ -33,6 +33,11 @@ export default {
           this.$auth.fetchUser();
         }).catch((err) => {this.isSubmitted = false; this.responseMessage = err});
     }
+  },
+  mounted() {
+    if(this.$auth.user.avatar) {
+
+    }
   }
 }
 </script>
