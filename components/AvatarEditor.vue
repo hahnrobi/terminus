@@ -122,6 +122,7 @@
 </template>
 <script>
 import Avataaars from 'vuejs-avataaars'
+import { Avataaar } from '../models/avataaar';
 
 import Vue from 'vue'
 const accessoriesType = [
@@ -311,29 +312,13 @@ const topColor = [
     'Red',
     'White'
 ]
-
-export class Avataaar {
-    accessoriesType = accessoriesType[2]
-    clotheType = clotheType[1]
-    clotheColor = clotheColor[0]
-    eyebrowType = eyebrowType [2]
-    eyeType = eyeType[2]
-    facialHairColor = facialHairColor[2]
-    facialHairType = facialHairType[0]
-    graphicType = graphicType[0]
-    hairColor = hairColor[0]
-    mouthType = mouthType[1]
-    skinColor = skinColor[0]
-    topType = topType[16]
-    topColor = topColor[0]
-}
 export default Vue.extend({
     components: {
         Avataaars
     },
     props: {
         avatar: {
-            default() {const avatar = new Avataaar();return avatar;},
+            default() {const avatar = new Avataaar;return avatar;},
             type: Avataaar
         }
     },
