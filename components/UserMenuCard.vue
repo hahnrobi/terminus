@@ -41,7 +41,7 @@
 
           <v-btn
             text
-            @click="$emit('buttonClicked')"
+            @click="$emit('buttonClicked'); $router.push({path: '/user/profile'})"
           >
             Account
           </v-btn>
