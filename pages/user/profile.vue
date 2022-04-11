@@ -1,13 +1,16 @@
 <template>
   <div>
+    <h1>Manage your profile</h1>
     <v-tabs v-model="tab" color="basil" grow>
-      <v-tab key="personaldata"> Personal info </v-tab>
-      <v-tab key="avatar"> Avatar </v-tab>
+      <v-tab key="personaldata">Personal info</v-tab>
+      <v-tab key="avatar">Avatar</v-tab>
+      <v-tab key="change-password">Change password</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item key="personaldata">
         <v-card color="basil" flat>
-          <v-card-text>qwe</v-card-text>
+          <v-card-text style="height: 2000px">
+          </v-card-text>
         </v-card>
       </v-tab-item>
       <v-tab-item key="avatar">
@@ -43,6 +46,33 @@
                 </v-btn>
               </template>
             </v-snackbar>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item key="change-password">
+        <v-card color="basil" flat>
+          <v-card-text>
+              <v-text-field
+                  label="Current password"
+                  hide-details="auto"
+                  type="password"
+                  outlined
+                ></v-text-field>
+                <v-text-field
+                  label="New password"
+                  hide-details="auto"
+                  type="password"
+                  outlined
+                ></v-text-field>
+                <v-text-field
+                  label="New password again"
+                  hide-details="auto"
+                  type="password"
+                  outlined
+                ></v-text-field>
+                <v-btn
+                  color="primary"
+                >Change password</v-btn>
           </v-card-text>
         </v-card>
       </v-tab-item>
