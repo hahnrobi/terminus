@@ -53,7 +53,7 @@ export default {
     async saveAvatar() {
       this.responseMessage = ''
       this.isSubmitted = true
-      this.$axios
+      await this.$axios
         .put('user/avatar', this.avatar)
         .then(() => {
           this.isSubmitted = false
