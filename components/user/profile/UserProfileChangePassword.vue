@@ -83,7 +83,10 @@ export default {
         .then(() => {
           this.isSubmitted = false
           this.responseMessage = 'Password changed.'
-          this.snackbar = true
+          this.snackbar = true;
+          this.currentPassword = "";
+          this.newPassword = "";
+          this.newPasswordRetype = "";
         })
         .catch((err) => {
           this.snackbar = true
