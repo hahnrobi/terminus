@@ -22,6 +22,17 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
+        <v-divider></v-divider>
+        <v-list-item v-for="item in userShells" :key="item._id" :to='/shells/+item._id' router exact>
+          <v-list-item-action>
+            <v-badge icon="mdi-connection" color="green" overlap>
+              <v-icon>mdi-console</v-icon>
+            </v-badge>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.name" />
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
@@ -35,18 +46,12 @@
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
+          <v-btn icon v-bind="attrs" v-on="on">
             <v-icon>mdi-application</v-icon>
           </v-btn>
         </template>
         <span>Tooltip</span>
       </v-tooltip>
-
-
 
       <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>mdi-minus</v-icon>
@@ -64,18 +69,13 @@
           offset-x
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-            >
+            <v-btn color="primary" dark v-bind="attrs" v-on="on">
               <Avatar :avatar="userAvatar" />
               {{ $auth.user.name }}
             </v-btn>
           </template>
           <UserMenuCard @buttonClicked="userMenu = false" />
-      </v-menu>
+        </v-menu>
       </div>
       <div v-else>
         <v-btn text to="/auth/login">login</v-btn>
@@ -112,15 +112,18 @@ import Avataaars from 'vuejs-avataaars'
 export default {
   name: 'DefaultLayout',
   components: {
-    Avataaars
+    Avataaars,
   },
   computed: {
     userAvatar() {
-      if(this.$auth.user.avatar) {
-        return JSON.parse(this.$auth.user.avatar);
+      if (this.$auth.user.avatar) {
+        return JSON.parse(this.$auth.user.avatar)
       }
-      return undefined;
-    }
+      return undefined
+    },
+    userShells() {
+      return this.$store.getters.ownedShells
+    },
   },
   data() {
     return {
@@ -152,14 +155,15 @@ export default {
     }
   },
   mounted() {
-    if(this.$auth.user) {
+    if (this.$auth.user) {
       this.items.push({
         icon: 'mdi-console-line',
         title: 'Shells',
-        to: "/manage/shells"
+        to: '/manage/shells',
       })
+      this.$store.dispatch('getOwnedShells')
     }
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>
