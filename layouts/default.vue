@@ -23,7 +23,10 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item v-for="item in userShells" :key="item._id" :to='/shells/+item._id' router exact>
+        <v-tooltip right  v-for="item in userShells" :key="item._id">
+      <template v-slot:activator="{ on, attrs }">
+        <v-list-item  :to='/shells/+item._id'  v-bind="attrs"
+          v-on="on" router exact>
           <v-list-item-action>
             <v-badge icon="mdi-connection" color="green" overlap>
               <v-icon>mdi-console</v-icon>
@@ -33,6 +36,9 @@
             <v-list-item-title v-text="item.name" />
           </v-list-item-content>
         </v-list-item>
+        </template>
+      <span><b>{{ item.name }}</b><br />{{item.host}}:{{item.port}}<br />User: {{item.username}}</span>
+    </v-tooltip>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
