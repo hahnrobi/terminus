@@ -1,6 +1,6 @@
 <template>
   <div>
-    <avataaars class="user-avatar" 
+    <avataaars v-if="this.avatar" class="user-avatar" 
             :clotheType="this.avatar.clotheType"
             :accessoriesType="this.avatar.accessoriesType"
             :clotheColor="this.avatar.clotheColor"
