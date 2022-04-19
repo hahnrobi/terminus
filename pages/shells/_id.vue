@@ -14,7 +14,7 @@
 
         <v-divider></v-divider>
 
-        <v-stepper-step step="3"> Terminal initializing </v-stepper-step>
+        <v-stepper-step :complete="step > 3" step="3"> Terminal initializing </v-stepper-step>
       </v-stepper-header>
 
       <v-stepper-items>
@@ -48,14 +48,19 @@ export default {
       step: 0,
 	  error: false,
 	  errorMessage: "",
-	  connectToken: ""
+	  connectToken: "",
+	  terminalSocket: null
     }
   },
   methods: {
     step1: function () {
 	  this.step = 1;
-	  this.$axios.post("/shell/connect-token", {shellId: this.$route.params.id}).then(() => {
-		  this.step2();
+	  this.terminalSocket = {};
+	  console.log(this.$terminal);
+	  
+	  this.$axios.post("/shell/connect-token", {shellId: this.$route.params.id}).then((res) => {
+		 this.connectToken = res.data;
+		 this.step2();
 	  }).catch(error => {
 		  this.error = true;
 			this.errorMessage = error;
@@ -64,6 +69,20 @@ export default {
 	step2: function() {
 		this.step = 2;
 		console.log("step2");
+		this.terminalSocket = this.$terminal.initNewConnection()
+		console.log("Sending connection token:", this.connectToken);
+		this.terminalSocket.on('connect-token-successful', () => {
+			this.step3();
+		})
+		this.terminalSocket.emit('connect-token', this.connectToken);
+	},
+	step3: function() {
+		this.step = 3;
+		this.terminalSocket.on('ready', () => this.step4());
+		this.terminalSocket.emit("start",  {cols: 40, rows: 40}); //CHANGE THIS TO TERMIAL SIZE ONCE IT'S DONE
+	},
+	step4: function() {
+		this.step = 4;
 	}
   },
   mounted: function mounted() {
