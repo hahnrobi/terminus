@@ -28,7 +28,9 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    {src: '~/plugins/terminal.client.js', mode: 'client'}
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
@@ -48,7 +50,8 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    'nuxt-socket-io'
   ],
   auth: {
     strategies: {
