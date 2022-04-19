@@ -1,13 +1,76 @@
 <template>
-  
+  <div>
+    <v-stepper v-model="step">
+      <v-stepper-header>
+        <v-stepper-step :complete="step > 1" step="1">
+          Generating token
+        </v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step :complete="step > 2" step="2">
+          Connector initializing
+        </v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step step="3"> Terminal initializing </v-stepper-step>
+      </v-stepper-header>
+
+      <v-stepper-items>
+        <v-stepper-content step="1">
+          <v-card class="mb-12" height="200px" v-if="!error">
+            <v-progress-circular indeterminate></v-progress-circular>
+            Generating token...
+          </v-card>
+		  <v-card class="mb-12" v-if="error">
+            {{errorMessage}}
+          </v-card>
+        </v-stepper-content>
+
+        <v-stepper-content step="2">
+          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
+        </v-stepper-content>
+
+        <v-stepper-content step="3">
+          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
+        </v-stepper-content>
+      </v-stepper-items>
+    </v-stepper>
+  </div>
 </template>
 
 <script>
 export default {
-	name: "ShellInteractPage"
+  name: 'ShellInteractPage',
+  data() {
+    return {
+      step: 0,
+	  error: false,
+	  errorMessage: "",
+	  connectToken: ""
+    }
+  },
+  methods: {
+    step1: function () {
+	  this.step = 1;
+	  this.$axios.post("/shell/connect-token", {shellId: this.$route.params.id}).then(() => {
+		  this.step2();
+	  }).catch(error => {
+		  this.error = true;
+			this.errorMessage = error;
+	  });
+    },
+	step2: function() {
+		this.step = 2;
+		console.log("step2");
+	}
+  },
+  mounted: function mounted() {
+    this.step1()
+  },
 }
 </script>
 
 <style>
-
 </style>
