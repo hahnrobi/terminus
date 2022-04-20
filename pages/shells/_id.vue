@@ -1,20 +1,16 @@
 <template>
   <div>
-    <v-stepper v-model="step">
+    <v-stepper v-model="step" v-if="step < 3">
       <v-stepper-header>
         <v-stepper-step :complete="step > 1" step="1">
           Generating token
         </v-stepper-step>
-
         <v-divider></v-divider>
-
         <v-stepper-step :complete="step > 2" step="2">
           Connector initializing
         </v-stepper-step>
-
         <v-divider></v-divider>
-
-        <v-stepper-step :complete="step > 3" step="3"> Terminal initializing </v-stepper-step>
+        <v-stepper-step :complete="step > 3" step="3"> Remote authenticating </v-stepper-step>
       </v-stepper-header>
 
       <v-stepper-items>
@@ -37,19 +33,28 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
+    <div v-if="step == 4">
+      <client-only>
+        <TerminalComponent ref="terminalRef" dataIn="connectorDataIncoming" @dataOut="sendTerminalData"></TerminalComponent>
+      </client-only>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ShellInteractPage',
+  components: {
+    TerminalComponent: () => {if(process.client){return import('../../components/TerminalComponent.vue')}},
+  },
   data() {
     return {
       step: 0,
 	  error: false,
 	  errorMessage: "",
 	  connectToken: "",
-	  terminalSocket: null
+	  terminalSocket: null,
+    connectorDataIncoming: []
     }
   },
   methods: {
@@ -79,11 +84,16 @@ export default {
 	step3: function() {
 		this.step = 3;
 		this.terminalSocket.on('ready', () => this.step4());
-		this.terminalSocket.emit("start",  {cols: 40, rows: 40}); //CHANGE THIS TO TERMIAL SIZE ONCE IT'S DONE
+		this.terminalSocket.emit("start",  {cols: 40, rows: 24}); //CHANGE THIS TO TERMIAL SIZE ONCE IT'S DONE
 	},
 	step4: function() {
 		this.step = 4;
-	}
+		this.terminalSocket.on('data', (data) => { this.$refs.terminalRef.setData(data); this.connectorDataIncoming = data; console.log(this.connectorDataIncoming)});
+	},
+      sendTerminalData(data) {
+      console.log("SENDING DATA");
+      this.terminalSocket.emit('data', data);
+    }
   },
   mounted: function mounted() {
     this.step1()

@@ -34,7 +34,7 @@ export default {
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
-    { path: '~/components', ignore: ["Terminal.vue"]}
+    { path: '~/components', ignore: ["Terminal.vue", "TerminalComponent.vue"]}
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
