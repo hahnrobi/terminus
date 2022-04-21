@@ -28,7 +28,11 @@ export default Vue.extend({
 		this.term.loadAddon(this.fitAddon);
         this.term.focus();
         this.fitAddon.fit();
-        //window.addEventListener('resize', () => {this.term.resizeScreen()});
+        window.addEventListener('resize', () => {
+            this.fitAddon.fit()
+            //console.log({ cols: this.term.cols, rows: this.term.rows });
+            this.$emit("resized", { cols: this.term.cols, rows: this.term.rows })
+        });
 		this.term.onData((data) => {
             console.log("Term: ", data);
 			this.$emit('dataOut', data);
