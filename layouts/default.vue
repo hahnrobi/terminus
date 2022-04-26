@@ -1,20 +1,20 @@
 <template>
   <v-app dark>
     <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
+      v-model="layoutParams.drawer"
+      :mini-variant="layoutParams.miniVariant"
+      :clipped="layoutParams.clipped"
       fixed
       app
     >
       <NavigationMenu></NavigationMenu>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
+    <v-app-bar :clipped-left="layoutParams.clipped" fixed app>
+      <v-app-bar-nav-icon @click.stop="updateLayoutParams('drawer', !layoutParams.drawer)" />
+      <v-btn icon @click.stop="updateLayoutParams('miniVariant', !layoutParams.miniVariant)">
+        <v-icon>mdi-{{ `chevron-${layoutParams.miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
+      <v-btn icon @click.stop="updateLayoutParams('clipped', !layoutParams.clipped)">
         <v-icon>mdi-application</v-icon>
       </v-btn>
 
@@ -27,17 +27,16 @@
         <span>Tooltip</span>
       </v-tooltip>
 
-      <v-btn icon @click.stop="fixed = !fixed">
+      <v-btn icon @click.stop="updateLayoutParams('fixed', !layoutParams.fixed)">
         <v-icon>mdi-minus</v-icon>
       </v-btn>
 
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title >Terminus</v-toolbar-title>
 
       <v-spacer />
-
       <UserMenu></UserMenu>
 
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
+      <v-btn icon @click.stop="updateLayoutParams('rightDrawer', !layoutParams.rightDrawer)">
         <v-icon>mdi-menu</v-icon>
       </v-btn>
     </v-app-bar>
@@ -46,9 +45,9 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
+    <v-navigation-drawer v-model="layoutParams.rightDrawer" :right="layoutParams.right" temporary fixed>
       <v-list>
-        <v-list-item @click.native="right = !right">
+        <v-list-item @click.native="updateLayoutParams('right', !layoutParams.right)">
           <v-list-item-action>
             <v-icon light> mdi-repeat </v-icon>
           </v-list-item-action>
@@ -56,7 +55,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-footer :absolute="!fixed" app>
+    <v-footer :absolute="!layoutParams.fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
@@ -72,23 +71,22 @@ export default {
     UserMenu
   },
   computed: {
-   
+   layoutParams() {
+     return this.$store.getters.getLayoutParams;
+   }
   },
   data() {
-    const obj = {};
-    Object.assign(obj, this.$store.dispatch('getLayoutParams'));
-    return obj;
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
+    return {};
+  },
+  methods: {
+    updateLayoutParams(param, value) {
+      this.layoutParams[param] = value;
+      console.log(param, value);
+      this.$store.commit('UPDATE_LAYOUT_PARAMS', {param: param, value: value});
     }
   },
-
+  async mounted() {
+    console.log(await this.layoutParams);
+  }
 }
 </script>

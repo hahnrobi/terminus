@@ -29,8 +29,9 @@ export default () => new Vuex.Store({
         SET_OWNED_SHELLS(state, shells) {
             state.ownedShells = shells;
         },
-        UPDATE_LAYOUT_PARAMS(state, payload) {
-            state.layoutParams = payload;
+        UPDATE_LAYOUT_PARAMS(state, {param, value}) {
+            state.layoutParams[param] = value;
+            console.log(state.layoutParams);
         }
     },
     actions: {
@@ -52,9 +53,6 @@ export default () => new Vuex.Store({
         },
         getLayoutParams() {
             return this.state.layoutParams;
-        },
-        updateLayoutParams({commit}) {
-            commit('UPDATE_LAYOUT_PARAMS', commit);
         }
     }
 });
