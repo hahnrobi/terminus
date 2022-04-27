@@ -25,6 +25,10 @@ export default Vue.extend({
 	},
 	props: ['dataIn'],
 	mounted() {
+        const theme = this.getThemeFromStore();
+        if(theme) {
+            this.term.options.theme = theme.colors;
+        }
         this.term.options.cursorBlink = true;
         this.term.options.fontFamily = "'Fira Code', monospace";
         this.term.options.fontWeight = "500";
@@ -45,7 +49,11 @@ export default Vue.extend({
 	methods: {
 		setData(data: string | Uint8Array) {
 			this.term.write(data);
-		}
+		},
+        getThemeFromStore() {
+            let themeName:string = this.$store.getters.getTerminalTheme;
+            return themes.find(x => x.name == themeName);
+        }
 	},
 })
 </script>

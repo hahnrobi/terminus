@@ -18,22 +18,15 @@
         <v-list>
           <v-list-item>
             <v-list-item-action>
-              <v-switch
-                v-model="message"
-                color="purple"
-              ></v-switch>
+              <v-select
+              v-model="selectedTheme"
+              :items="availableThemes"
+              label="Terminal theme"
+              item-text="title"
+              item-value="name"
+              solo
+              ></v-select>
             </v-list-item-action>
-            <v-list-item-title>Enable messages</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-action>
-              <v-switch
-                v-model="hints"
-                color="purple"
-              ></v-switch>
-            </v-list-item-action>
-            <v-list-item-title>Enable hints</v-list-item-title>
           </v-list-item>
         </v-list>
         <v-card-actions>
@@ -56,15 +49,30 @@
       </v-card>
 </template>
 <script>
+import { themes } from '~/assets/terminal-themes';
 export default {
     name: "UserMenuCard",
+    mounted() {
+      console.log(this.availableThemes);
+    },
     computed: {
     userAvatar() {
       if(this.$auth.user.avatar) {
         return JSON.parse(this.$auth.user.avatar);
       }
       return undefined;
+    },
+    availableThemes() {
+      return themes;
+    },
+    selectedTheme: {
+    get () {
+      return this.$store.getters.getTerminalTheme;
+    },
+    set (value) {
+       this.$store.commit('SET_TERMINAL_THEME', value);
     }
+  }
   },
 }
 </script>
