@@ -19,6 +19,19 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols=12>
+            <v-select
+              v-model="selectedTerminalTheme"
+              :items="availableThemes"
+              label="Terminal theme"
+              item-text="title"
+              item-value="name"
+              outlined
+              solo
+              ></v-select>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12">
           <v-btn color="primary" :disabled="isSubmitted" @click="saveData()">Save details</v-btn>
         </v-col>
@@ -35,9 +48,32 @@
   </v-form>
 </template>
 <script>
+import { themes } from '~/assets/terminal-themes';
+
 export default {
   name: 'UserProfilePersonalDetails',
+  computed: {
+    availableThemes() {
+      return [
+        {"name": null, "title": "Default"},
+        ...themes
+      ];
+    },
+    selectedTerminalTheme: {
+      get() {
+        return this.user?.terminalTheme ? this.user.terminalTheme : null;
+      },
+      set(value) {
+        if(this.user.terminalTheme && value === null) {
+          this.user.terminalTheme = "";  
+        }else {
+          this.user.terminalTheme = value;
+        }
+      }
+    }
+  },
   data() {
+    console.log(JSON.parse(JSON.stringify(this.$auth.user)));
 	  return {
 		  responseMessage: "",
 		  isSubmitted: false,
@@ -65,7 +101,8 @@ export default {
           this.responseMessage = err.response.data.message;
           this.snackbar = true;
         })
-	  }
+	  },
+    
   }
 }
 </script>
