@@ -2,7 +2,6 @@ import Vuex from "vuex";
 
 export default () => new Vuex.Store({
     state: {
-        currentUser: {email:""},
         ownedShells: [],
         layoutParams: {
             clipped: false,
@@ -20,12 +19,6 @@ export default () => new Vuex.Store({
         getLayoutParams: (state) => state.layoutParams
     },
     mutations: {
-        LOGIN_USER(state, user) {
-            state.currentUser = user;
-        },
-        LOGOUT_USER(state) {
-            state.currentUser = {};
-        },
         SET_OWNED_SHELLS(state, shells) {
             state.ownedShells = shells;
         },
@@ -35,12 +28,6 @@ export default () => new Vuex.Store({
         }
     },
     actions: {
-        loginUser({commit}, {email, password}) {
-            commit("LOGIN_USER", user);
-        },
-        logoutUser({commit}) {
-            commit("LOGOUT_USER");
-        },
         async getOwnedShells({ commit }) {
             //TODO: Token auth
             await this.$axios.get("/shell")
