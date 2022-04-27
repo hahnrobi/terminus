@@ -8,7 +8,9 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          <Avatar :avatar="userAvatar" class="user-avatar" />{{ $auth.user.email }}
+          <Avatar :avatar="userAvatar" class="user-avatar" />{{
+            $auth.user.email
+          }}
         </v-btn>
       </template>
       <UserMenuCard @buttonClicked="userMenu = false" />
@@ -25,12 +27,13 @@
 export default {
   name: 'UserMenu',
   computed: {
-        userAvatar() {
-      if(this.$auth.user.avatar) {
-        return JSON.parse(this.$auth.user.avatar);
+    userAvatar() {
+      if (this.$auth.user.avatar) {
+        return JSON.parse(this.$auth.user.avatar)
       }
-      return undefined;
-    }
+      return undefined
+    },
+
   },
   data() {
     return {
