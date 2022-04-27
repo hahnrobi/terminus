@@ -8,6 +8,7 @@
 import Vue from 'vue'
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { themes } from '~/assets/terminal-themes';
 declare global {
   interface Navigator {
       msSaveBlob?: (blob: any, defaultName?: string) => boolean
@@ -24,9 +25,12 @@ export default Vue.extend({
 	},
 	props: ['dataIn'],
 	mounted() {
+        this.term.options.cursorBlink = true;
+        this.term.options.fontFamily = "'Fira Code', monospace";
+        this.term.options.fontWeight = "500";
 		this.term.open(<HTMLElement>this.$refs.terminal_container);
 		this.term.loadAddon(this.fitAddon);
-        this.term.focus();        
+        this.term.focus();
         this.fitAddon.fit();
         window.addEventListener('resize', () => {
             this.fitAddon.fit()
