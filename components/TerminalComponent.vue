@@ -26,7 +26,7 @@ export default Vue.extend({
 	mounted() {
 		this.term.open(<HTMLElement>this.$refs.terminal_container);
 		this.term.loadAddon(this.fitAddon);
-        this.term.focus();
+        this.term.focus();        
         this.fitAddon.fit();
         window.addEventListener('resize', () => {
             this.fitAddon.fit()

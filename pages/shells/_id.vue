@@ -51,6 +51,7 @@
 <script>
 export default {
   name: 'ShellInteractPage',
+  layout: 'terminal',
   components: {
     TerminalComponent: () => {
       if (process.client) {
