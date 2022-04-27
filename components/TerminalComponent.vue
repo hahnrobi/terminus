@@ -25,7 +25,7 @@ export default Vue.extend({
 	},
 	props: ['dataIn'],
 	mounted() {
-        const theme = this.getThemeFromStore();
+        const theme = this.getTheme();
         if(theme) {
             this.term.options.theme = theme.colors;
         }
@@ -50,8 +50,8 @@ export default Vue.extend({
 		setData(data: string | Uint8Array) {
 			this.term.write(data);
 		},
-        getThemeFromStore() {
-            let themeName:string = this.$store.getters.getTerminalTheme;
+        getTheme() {
+            let themeName:string = this.$auth.user.terminalTheme;
             return themes.find(x => x.name == themeName);
         }
 	},
