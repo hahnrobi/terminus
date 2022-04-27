@@ -9,7 +9,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">
           <Avatar :avatar="userAvatar" class="user-avatar" />{{
-            $auth.user.email
+            $auth.user.name
           }}
         </v-btn>
       </template>
