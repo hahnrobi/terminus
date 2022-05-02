@@ -55,11 +55,18 @@ export default {
   auth: {
     strategies: {
       local: {
+        scheme: 'refresh',
         token: {
           property: 'access_token',
           global: true,
           //required: true,
           //type: 'Bearer'
+        },
+        refreshToken: {
+          propery: 'refresh_token',
+          data: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 30,
+          required: true
         },
         user: {
           property: 'user',
@@ -67,6 +74,7 @@ export default {
         },
         endpoints: {
           login: { url: '/auth/login', method: 'post', propertyName: "access_token" },
+          refresh: { url: '/auth/refresh', method: 'post'},
           logout: { url: '/auth/logout', method: 'delete' },
           user: { url: '/profile', method: 'get' }
         }
