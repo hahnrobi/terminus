@@ -8,8 +8,16 @@
         <v-list-item-title v-text="item.title" />
       </v-list-item-content>
     </v-list-item>
+    <v-list-item to="/manage/shells" v-if="this.$auth.user" router exact>
+      <v-list-item-action>
+        <v-icon>mdi-console-line</v-icon>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title >Shells</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
     <v-divider></v-divider>
-    <v-tooltip right v-for="item in userShells" :key="item._id">
+    <v-tooltip right v-for="item in ownedShells" :key="item._id">
       <template v-slot:activator="{ on, attrs }">
         <v-list-item
           :to="/shells/ + item._id"
@@ -37,13 +45,11 @@
   </v-list>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'NavigationMenu',
   computed: {
-    userShells() {
-      return this.$store.getters.ownedShells
-    },
-
+    ...mapGetters(['ownedShells'])
   },
   data() {
     return {
@@ -66,15 +72,20 @@ export default {
       ],
     }
   },
-    mounted() {
-    if (this.$auth.user) {
-      this.items.push({
-        icon: 'mdi-console-line',
-        title: 'Shells',
-        to: '/manage/shells',
-      })
-      this.$store.dispatch('getOwnedShells')
-    }
-  }
+  methods: {
+    checkUserItems() {
+        this.$store.dispatch('getOwnedShells');
+      }
+    },
+  mounted() {
+    this.checkUserItems()
+    console.log(this.$auth.$storage)
+    this.$auth.$storage.watchState('loggedIn', () => {
+      this.checkUserItems()
+    })
+    this.$auth.$storage.watchState('loggedOut', () => {
+      this.checkUserItems()
+    })
+  },
 }
 </script>

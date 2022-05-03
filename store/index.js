@@ -29,11 +29,14 @@ export default () => new Vuex.Store({
     },
     actions: {
         async getOwnedShells({ commit }) {
-            //TODO: Token auth
+            if(this.$auth.$storage.getState('loggedIn')) {
             await this.$axios.get("/shell")
                 .then(res => {
                     commit('SET_OWNED_SHELLS', res.data);
                 })
+            }else {
+                commit('SET_OWNED_SHELLS', []);
+            }
         },
         getOwnedShellDetails({ commit }, id) {
             return this.state.getOwnedShell(id);
