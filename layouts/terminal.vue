@@ -21,10 +21,10 @@
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-application</v-icon>
+            <v-icon>mdi-refresh</v-icon>
           </v-btn>
         </template>
-        <span>Tooltip</span>
+        <span>Reconnect</span>
       </v-tooltip>
 
       <v-btn icon @click.stop="updateLayoutParams('fixed', !layoutParams.fixed)">
