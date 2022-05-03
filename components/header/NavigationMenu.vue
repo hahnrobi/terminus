@@ -86,6 +86,6 @@ export default {
     this.$auth.$storage.watchState('loggedOut', () => {
       this.checkUserItems()
     })
-  },
+  }
 }
 </script>
