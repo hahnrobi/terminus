@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{this.state}}
     <v-stepper v-model="step" v-if="step < 3">
       <v-stepper-header>
         <v-stepper-step :complete="step > 1" step="1">
@@ -40,6 +41,7 @@
         <TerminalComponent
           ref="terminalRef"
           dataIn="connectorDataIncoming"
+          :state="state"
           @dataOut="sendTerminalData"
           @resized="sendTerminalSize"
         ></TerminalComponent>
@@ -49,6 +51,8 @@
 </template>
 
 <script>
+import {TerminalState} from '../../models/terminalState'
+import { mapGetters } from 'vuex'
 export default {
   name: 'ShellInteractPage',
   layout: 'terminal',
@@ -59,6 +63,11 @@ export default {
       }
     },
   },
+  computed: {
+    state() {
+      return this.$store.getters.getCurrentTerminal;
+    }
+  },
   data() {
     return {
       step: 0,
@@ -67,6 +76,7 @@ export default {
       connectToken: '',
       terminalSocket: null,
       connectorDataIncoming: [],
+      restart: 0
     }
   },
   methods: {
@@ -74,7 +84,6 @@ export default {
       this.step = 1
       this.terminalSocket = {}
       console.log(this.$terminal)
-
       this.$axios
         .post('/shell/connect-token', { shellId: this.$route.params.id })
         .then((res) => {
@@ -89,6 +98,10 @@ export default {
     step2: function () {
       this.step = 2
       console.log('step2')
+
+      this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'initializing', value: false});
+      this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'connecting', value: true});
+
       this.terminalSocket = this.$terminal.initNewConnection()
       console.log('Sending connection token:', this.connectToken)
       this.terminalSocket.on('connect-token-successful', () => {
@@ -98,6 +111,7 @@ export default {
     },
     step3: function () {
       this.step = 3
+      this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'connecting', value: false});
       this.terminalSocket.on('ready', () => this.step4())
       this.terminalSocket.emit('start', { cols: 40, rows: 24 }) //CHANGE THIS TO TERMIAL SIZE ONCE IT'S DONE
     },
@@ -118,8 +132,21 @@ export default {
     },
   },
   mounted: function mounted() {
+    this.$store.commit("ADD_TERMINAL", new TerminalState(this.$route.params.id));
+    this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'initializing', value: true});
+    this.$store.commit("SET_CURRENT_TERMINAL", this.$route.params.id);
     this.step1()
   },
+  watch: {
+    'state.restarting'(val) {
+      if(val) {
+        this.restart++;
+        this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'restarting', value: false});
+        this.$store.commit("REMOVE_TERMINAL", this.$route.params.id);
+        this.step1();
+      }
+    }
+  }
 }
 </script>
 

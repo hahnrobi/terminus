@@ -1,6 +1,7 @@
 export class TerminalState {
 	public id:string;
 	public restarting: boolean = false;
+	public disconnected: boolean = false;
 	public initializing: boolean = false;
 	public connecting: boolean = false;
 	public isError: boolean = false;

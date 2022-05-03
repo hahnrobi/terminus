@@ -20,7 +20,7 @@
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
+          <v-btn icon v-bind="attrs" v-on="on" @click="reconnectTerminal()">
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
         </template>
@@ -31,7 +31,7 @@
         <v-icon>mdi-minus</v-icon>
       </v-btn>
 
-      <v-toolbar-title >Terminus</v-toolbar-title>
+      <v-toolbar-title>{{getTerminals}}</v-toolbar-title>
 
       <v-spacer />
       <UserMenu></UserMenu>
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import NavigationMenu from '~/components/header/NavigationMenu.vue'
 import UserMenu from '~/components/header/UserMenu.vue'
 export default {
@@ -69,6 +71,7 @@ export default {
     UserMenu
   },
   computed: {
+    ...mapGetters(['getCurrentTerminal', 'getTerminals']),
    layoutParams() {
      return this.$store.getters.getLayoutParams;
    }
@@ -81,6 +84,10 @@ export default {
       this.layoutParams[param] = value;
       console.log(param, value);
       this.$store.commit('UPDATE_LAYOUT_PARAMS', {param: param, value: value});
+    },
+    reconnectTerminal() {
+      console.log("RECONNECT");
+      this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'restarting', value: true});
     }
   },
   async mounted() {
