@@ -1,96 +1,51 @@
 <template>
   <v-app dark>
     <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
+      v-model="layoutParams.drawer"
+      :mini-variant="layoutParams.miniVariant"
+      :clipped="layoutParams.clipped"
       fixed
       app
     >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <NavigationMenu></NavigationMenu>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
+    <v-app-bar :clipped-left="layoutParams.clipped" fixed app>
+      <v-app-bar-nav-icon @click.stop="updateLayoutParams('drawer', !layoutParams.drawer)" />
+      <v-btn icon @click.stop="updateLayoutParams('miniVariant', !layoutParams.miniVariant)">
+        <v-icon>mdi-{{ `chevron-${layoutParams.miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
+      <v-btn icon @click.stop="updateLayoutParams('clipped', !layoutParams.clipped)">
         <v-icon>mdi-application</v-icon>
       </v-btn>
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon>mdi-application</v-icon>
+          <v-btn icon v-bind="attrs" v-on="on" @click="reconnectTerminal()">
+            <v-icon>mdi-refresh</v-icon>
           </v-btn>
         </template>
-        <span>Tooltip</span>
+        <span>Reconnect</span>
       </v-tooltip>
 
-
-
-      <v-btn icon @click.stop="fixed = !fixed">
+      <v-btn icon @click.stop="updateLayoutParams('fixed', !layoutParams.fixed)">
         <v-icon>mdi-minus</v-icon>
       </v-btn>
 
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title>{{getTerminals}}</v-toolbar-title>
 
       <v-spacer />
+      <UserMenu></UserMenu>
 
-      <div v-if="$auth.loggedIn">
-        <v-menu
-          v-model="userMenu"
-          :close-on-content-click="false"
-          :nudge-width="200"
-          offset-x
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-            >
-              <Avatar class="user-avatar"/>{{ $auth.user.email }}
-            </v-btn>
-          </template>
-          <UserMenuCard @buttonClicked="userMenu = false" />
-      </v-menu>
-      </div>
-      <div v-else>
-        <v-btn text to="/auth/login">login</v-btn>
-        <v-btn text to="/auth/register">register</v-btn>
-      </div>
-
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
+      <v-btn icon @click.stop="updateLayoutParams('rightDrawer', !layoutParams.rightDrawer)">
         <v-icon>mdi-menu</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
-        <Nuxt style="height: 100%" />
+        <Nuxt />
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
+    <v-navigation-drawer v-model="layoutParams.rightDrawer" :right="layoutParams.right" temporary fixed>
       <v-list>
-        <v-list-item @click.native="right = !right">
+        <v-list-item @click.native="updateLayoutParams('right', !layoutParams.right)">
           <v-list-item-action>
             <v-icon light> mdi-repeat </v-icon>
           </v-list-item-action>
@@ -98,49 +53,45 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-footer :absolute="!fixed" app>
+    <v-footer :absolute="!layoutParams.fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+import NavigationMenu from '~/components/header/NavigationMenu.vue'
+import UserMenu from '~/components/header/UserMenu.vue'
 export default {
-  name: 'TerminalLayout',
+  name: 'DefaultLayout',
+  components: {
+    NavigationMenu,
+    UserMenu
+  },
+  computed: {
+    ...mapGetters(['getCurrentTerminal', 'getTerminals']),
+   layoutParams() {
+     return this.$store.getters.getLayoutParams;
+   }
+  },
   data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      userMenu: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
-        },
-                {
-          icon: 'mdi-battery',
-          title: 'Teszt oldal',
-          to: '/test',
-        },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Terminal',
+    return {};
+  },
+  methods: {
+    updateLayoutParams(param, value) {
+      this.layoutParams[param] = value;
+      console.log(param, value);
+      this.$store.commit('UPDATE_LAYOUT_PARAMS', {param: param, value: value});
+    },
+    reconnectTerminal() {
+      console.log("RECONNECT");
+      this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'restarting', value: true});
     }
   },
+  async mounted() {
+    console.log(await this.layoutParams);
+  }
 }
 </script>
-<style lang="scss" scoped>
-.user-avatar {
-  width: 32px;
-  margin-right: 1rem;
-}
-</style>

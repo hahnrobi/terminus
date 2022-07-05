@@ -137,6 +137,7 @@ export default {
           this.formSubmitted = false;
         });
       }
+      this.$store.dispatch('getOwnedShells');
     },
   },
 }

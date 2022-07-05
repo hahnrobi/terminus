@@ -28,11 +28,13 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    {src: '~/plugins/terminal.client.js', mode: 'client'}
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
-    { path: '~/components', ignore: ["Terminal.vue"]}
+    { path: '~/components', ignore: ["Terminal.vue", "TerminalComponent.vue"]}
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -48,16 +50,23 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
   ],
   auth: {
     strategies: {
       local: {
+        scheme: 'refresh',
         token: {
           property: 'access_token',
           global: true,
           //required: true,
           //type: 'Bearer'
+        },
+        refreshToken: {
+          propery: 'refresh_token',
+          data: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 30,
+          required: true
         },
         user: {
           property: 'user',
@@ -65,6 +74,7 @@ export default {
         },
         endpoints: {
           login: { url: '/auth/login', method: 'post', propertyName: "access_token" },
+          refresh: { url: '/auth/refresh', method: 'post'},
           logout: { url: '/auth/logout', method: 'delete' },
           user: { url: '/profile', method: 'get' }
         }

@@ -74,7 +74,6 @@ export default ({
                 }
             })
             console.log(loginInfo);
-            this.$store.dispatch('login', this.loginInfo);
         }
     }
 })
