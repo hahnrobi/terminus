@@ -65,7 +65,6 @@
 import NavigationMenu from '~/components/header/NavigationMenu.vue'
 import UserMenu from '~/components/header/UserMenu.vue'
 import {useLayoutStore} from '../stores/layout.store';
-import { mapStores } from 'pinia'
 
 export default {
   name: 'DefaultLayout',

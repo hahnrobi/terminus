@@ -45,11 +45,15 @@
   </v-list>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'pinia'
+import { useShellStore } from '../../stores/shell.store';
+
+
 export default {
   name: 'NavigationMenu',
   computed: {
-    ...mapGetters(['ownedShells'])
+    ownedShells: () => {return useShellStore().getOwnedShells},
+    ownedShell: () => {return useShellStore().getOwnedShell}
   },
   data() {
     return {
@@ -74,7 +78,7 @@ export default {
   },
   methods: {
     checkUserItems() {
-        this.$store.dispatch('getOwnedShells');
+        useShellStore().getOwnedShells;
       }
     },
   mounted() {
