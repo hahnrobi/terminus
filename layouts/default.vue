@@ -64,25 +64,29 @@
 <script>
 import NavigationMenu from '~/components/header/NavigationMenu.vue'
 import UserMenu from '~/components/header/UserMenu.vue'
+import {useLayoutStore} from '../stores/layout.store';
+import { mapStores } from 'pinia'
+
 export default {
   name: 'DefaultLayout',
+  store: null,
   components: {
     NavigationMenu,
     UserMenu
   },
   computed: {
    layoutParams() {
-     return this.$store.getters.getLayoutParams;
+     return useLayoutStore();
    }
   },
   data() {
     return {};
   },
+  setup() {
+  },
   methods: {
     updateLayoutParams(param, value) {
-      this.layoutParams[param] = value;
-      console.log(param, value);
-      this.$store.commit('UPDATE_LAYOUT_PARAMS', {param: param, value: value});
+      useLayoutStore().updateLayoutParams(param, value);
     }
   },
   async mounted() {
