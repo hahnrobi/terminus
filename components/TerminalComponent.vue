@@ -51,7 +51,7 @@ export default Vue.extend({
 			this.term.write(data);
 		},
         getTheme() {
-            let themeName:string = this.$auth.user.terminalTheme;
+            let themeName:string = "monokai" //this.$auth.user.terminalTheme;
             return themes.find(x => x.name == themeName);
         }
 	},
