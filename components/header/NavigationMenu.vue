@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     checkUserItems() {
-        useShellStore().getOwnedShells;
+        //useShellStore().getOwnedShells;
       }
     },
   mounted() {

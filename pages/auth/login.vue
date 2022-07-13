@@ -67,13 +67,16 @@ export default ({
     },
     methods: {
         login(loginInfo) {
-            this.$auth.loginWith('local', {
+            console.log(this.$auth.loginWith('local', {
                 data: {
                     email: loginInfo.email,
                     password: loginInfo.password
                 }
-            })
+            }).then(a => console.log(a)));
             console.log(loginInfo);
+            console.log(this.$store.state.auth);
+            console.log(this.$auth.user);
+            console.log(this.$store.state.auth.user);
         }
     }
 })

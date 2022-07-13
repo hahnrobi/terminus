@@ -68,7 +68,6 @@ import {useLayoutStore} from '../stores/layout.store';
 
 export default {
   name: 'DefaultLayout',
-  store: null,
   components: {
     NavigationMenu,
     UserMenu

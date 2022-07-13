@@ -40,12 +40,12 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     '@nuxtjs/composition-api/module',
-    ['@pinia/nuxt',  { disableVuex: false }],
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    ['@pinia/nuxt', { disableVuex: false }], //Allow Vuex for auth
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
