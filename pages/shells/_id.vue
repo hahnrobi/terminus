@@ -53,6 +53,7 @@
 <script>
 import {TerminalState} from '../../models/terminalState'
 import { mapGetters } from 'vuex'
+import { useTerminalStore } from '~/stores/terminal.store';
 export default {
   name: 'ShellInteractPage',
   layout: 'terminal',
@@ -65,6 +66,7 @@ export default {
   },
   computed: {
     state() {
+      return useTerminalStore().getCurrentTerminal;
       return this.$store.getters.getCurrentTerminal;
     }
   },
@@ -99,9 +101,11 @@ export default {
       this.step = 2
       console.log('step2')
 
-      this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'initializing', value: false});
-      this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'connecting', value: true});
+      useTerminalStore().updateTerminal({id: this.$route.params.id, param: 'initializing', value: false});
+      useTerminalStore().updateTerminal({id: this.$route.params.id, param: 'connecting', value: true});
 
+      //this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'initializing', value: false});
+      //this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'connecting', value: true});
       this.terminalSocket = this.$terminal.initNewConnection()
       console.log('Sending connection token:', this.connectToken)
       this.terminalSocket.on('connect-token-successful', () => {
@@ -111,7 +115,8 @@ export default {
     },
     step3: function () {
       this.step = 3
-      this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'connecting', value: false});
+      useTerminalStore().updateTerminal({id: this.$route.params.id, param: 'connecting', value: false});
+      //this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'connecting', value: false});
       this.terminalSocket.on('ready', () => this.step4())
       this.terminalSocket.emit('start', { cols: 40, rows: 24 }) //CHANGE THIS TO TERMIAL SIZE ONCE IT'S DONE
     },
@@ -132,17 +137,22 @@ export default {
     },
   },
   mounted: function mounted() {
-    this.$store.commit("ADD_TERMINAL", new TerminalState(this.$route.params.id));
-    this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'initializing', value: true});
-    this.$store.commit("SET_CURRENT_TERMINAL", this.$route.params.id);
+    useTerminalStore().addTerminal(new TerminalState(this.$route.params.id));
+    //this.$store.commit("ADD_TERMINAL", new TerminalState(this.$route.params.id));ADD_TERMINAL
+    useTerminalStore().updateTerminal({id: this.$route.params.id, param: 'initializing', value: true});
+    //this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'initializing', value: true});
+    useTerminalStore().setCurrentTerminal(this.$route.params.id);
+    //this.$store.commit("SET_CURRENT_TERMINAL", this.$route.params.id);
     this.step1()
   },
   watch: {
     'state.restarting'(val) {
       if(val) {
         this.restart++;
-        this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'restarting', value: false});
-        this.$store.commit("REMOVE_TERMINAL", this.$route.params.id);
+        //useTerminalStore().updateTerminal({id: this.$route.params.id, param: 'restarting', value: false});
+        //this.$store.commit("UPDATE_TERMINAL_STATE", {id: this.$route.params.id, param: 'restarting', value: false});
+        //this.$store.commit("REMOVE_TERMINAL", this.$route.params.id);
+        useTerminalStore().removeTerminal(this.$route.params.id);
         this.step1();
       }
     }
